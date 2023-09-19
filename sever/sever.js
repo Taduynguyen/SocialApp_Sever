@@ -6,7 +6,7 @@ import cors from "cors";
 import router from "./routes/index.js";
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = 3001;
 
 // 1. Create connection to database
 connectToDatabase();
