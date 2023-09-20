@@ -113,6 +113,21 @@ authRouter.post("/register", async (req, res) => {
   }
 });
 
+authRouter.get("/all-users", authMiddleware, async (req, res) => {
+  const { id } = req.user;
+  try {
+    const allUsers = await UserModel.find().select(
+      "-password"
+    );
+
+    res.status(200).json(allUsers);
+  } catch (error) {
+    res.status(500).json({
+      message: "Lỗi sever",
+    });
+  }
+});
+
 authRouter.get("/me", authMiddleware, async (req, res) => {
   const { id } = req.user;
   const currentUser = await UserModel.findById(id).select("-password");
@@ -120,6 +135,13 @@ authRouter.get("/me", authMiddleware, async (req, res) => {
   res.json({
     userInfo: currentUser,
   });
+});
+
+authRouter.get("/profile/:id", authMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const selectedUser = await UserModel.findById(id).select("-password");
+
+  res.json(selectedUser);
 });
 
 export default authRouter;
